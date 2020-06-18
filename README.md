@@ -205,3 +205,89 @@ const board = [
     TileType.CIRCLE, TileType.EMPTY,  TileType.EMPTY
 ];
 ```
+
+## Exercise 6 - Stateful components
+Until React 16.8 holding state in components was acomplished by using Javascript classes which extended `React.Component`. Below is a minimal example of using `state` and handlers - counter with button for incrementing value:
+```tsx
+interface State {
+    counter: number;
+}
+
+class StatefulComponentExample extends React.Component<any, State> {
+    state = {
+        counter: 0
+    };
+
+    handleClick = () => this.setState(prevState => ({
+        counter: prevState.counter + 1
+    }));
+
+    render() {
+        return (
+            <div>
+                Current value: {this.state.counter} <br />
+                <button onClick={this.handleClick}>Increment</button>
+            </div>
+        );
+    }
+}
+```
+First of all, if we wanted to use state, our component needed to be a class. In class components we can access `props` and `state` using `this.props` and `this.state`. Adding handler to button is very similar to old HTML syntax, except that we are passing function reference as an argument and the name of the attribute is `onClick`, not `onclick`. State mutations in class components are handled via [this.setState](https://reactjs.org/docs/react-component.html#setstate) method.
+
+In our application, we need to create stateful component for storing board state. Let's start with the following code in `src/GameContainer.tsx`:
+```tsx
+interface GameState {
+    board: TileType[];
+}
+
+class GameContainer extends React.Component<any, GameState> {
+	render() {
+		return (
+			<Game board={this.state.board} />
+		);
+	}
+}
+```
+In case you are wondering why `GameContainer` - Dan Abramov, one of the React core contributors, once introduced the idea of splitting code between so-called [Dumb and Presentational components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0).
+
+Then, we need to initialize our state with value, as in previous example. Let's move there `board` from `src/Game.tsx`. Additionally, we need to change `Game` so that it uses `board` passed via `props`.
+
+Next, let's add some `onClick` handler which will set clicked `Tile` state to X:
+```tsx
+handleSelect = (index: number) => {
+    this.setState(state => {
+    	const board = [...state.board];
+    	board[index] = TileType.CROSS;
+        return {
+            board
+        };
+    });
+};
+```
+Then, we need to pass it down to `Game` and even further to `Tile` - but how to pass `index` value? Using anonymous inline functions:
+```tsx
+<Tile onClick={() => onSelect(index)} />
+```
+Finally, we need to decide whether it's X or O's turn. Simple solution would be to extend our state with boolean flag: `circleIsNext`, which we would flip inside `select`. However, that would violate so-called `single source of truth` principle which means that we could end up havign conflicted data.
+
+A more robust solution would be to count the number of empty tiles in our board - if it's even it could mean that it's O's turn.
+
+As I mentioned earlier, until React 16.8 class components were the only way to handle state natively in React components. This version introduced a groundbreaking change - React hooks. 
+
+With hooks, you can achieve almost everything that class components allowed, using simpler syntax and better code locality.
+
+Here is an example of the same counter as before:
+```tsx
+const StatefulComponentExampleWithHooks: React.FunctionComponent  = () => {
+    const [counter, setCounter] = React.useState(0);
+
+    return (
+        <div>
+            Current value: {counter} <br />
+            <button onClick={() => setCounter(counter + 1)}>Increment</button>
+        </div>
+    );
+}
+```
+
+As an additional exercise you can try and implement `GameContainer` using hooks.
