@@ -81,6 +81,7 @@ class WeatherContainer extends React.Component<WeatherContainerProps, WeatherCon
                 forecast={this.state.forecast}
             >
                 <WeatherForm
+                    disabled={this.state.loading}
                     city={this.state.city}
                     onCityChange={this.handleCityChange}
                     onSubmit={this.handleSubmit}

@@ -29,7 +29,7 @@ const WeatherHooks: React.FunctionComponent = () => {
 
         if (updatedCity !== "") {
             setError(false);
-            setLoading(false);
+            setLoading(true);
 
             loadForecast(updatedCity)
                 .then(setForecast)
@@ -50,6 +50,7 @@ const WeatherHooks: React.FunctionComponent = () => {
             forecast={forecast}
         >
             <WeatherForm
+                disabled={loading}
                 city={city}
                 onCityChange={handleCityChange}
                 onSubmit={handleSubmit}
