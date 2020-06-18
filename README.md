@@ -187,3 +187,21 @@ Another useful feature that we used is `string interpolation`:
 const name = "Pawel";
 console.log(`Hello ${name}!`) // Hello Pawel!
 ```
+
+## Exercise 5 - Working with arrays
+Another improvement would be to use `array` to dynamically render tiles. Here's how to do it in JSX using [Array.prototype.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map):
+```jsx
+<div>
+    {['a', 'b', 'c'].map((element, index) => (
+        <span>I am {element} at index {index}</span>
+    ))}
+</div>
+```
+Here's prefilled array of tiles:
+```typescript
+const board = [
+    TileType.CIRCLE, TileType.CROSS,  TileType.CIRCLE,
+    TileType.CROSS,  TileType.CIRCLE, TileType.CROSS,
+    TileType.CIRCLE, TileType.EMPTY,  TileType.EMPTY
+];
+```

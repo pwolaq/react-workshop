@@ -1,4 +1,5 @@
 import React from "react";
+import Tile, {TileType} from "./Tile";
 
 const Game: React.FunctionComponent = () => (
     <div>
@@ -6,15 +7,15 @@ const Game: React.FunctionComponent = () => (
             <div className="d-flex">
                 <div className="p-5">
                     <div className="board">
-                        <button type="button" className="tile btn btn-success">O</button>
-                        <button type="button" className="tile btn btn-info">X</button>
-                        <button type="button" className="tile btn btn-success">O</button>
-                        <button type="button" className="tile btn btn-info">X</button>
-                        <button type="button" className="tile btn btn-success">O</button>
-                        <button type="button" className="tile btn btn-info">X</button>
-                        <button type="button" className="tile btn btn-success">O</button>
-                        <button type="button" className="tile btn btn-outline-secondary" />
-                        <button type="button" className="tile btn btn-outline-secondary" />
+                        <Tile type={TileType.CIRCLE} />
+                        <Tile type={TileType.CROSS} />
+                        <Tile type={TileType.CIRCLE} />
+                        <Tile type={TileType.CROSS} />
+                        <Tile type={TileType.CIRCLE} />
+                        <Tile type={TileType.CROSS} />
+                        <Tile type={TileType.CIRCLE} />
+                        <Tile type={TileType.EMPTY} />
+                        <Tile type={TileType.EMPTY} />
                     </div>
                 </div>
             </div>
