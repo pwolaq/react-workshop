@@ -407,3 +407,52 @@ Next we need to implement `src/Home/Card.tsx` to return the following parametriz
 </div>
 ```
 Links in `react-router` can be created using `Link` component.
+
+## Exercise 9 - Working with forms
+Let's start implementing our `Weather` component:
+Form (`src/Weather/WeatherForm.tsx`):
+```tsx
+import React from 'react';
+
+interface WeatherFormProps {
+}
+
+const WeatherForm: React.FunctionComponent<WeatherFormProps> = () => (
+    <form>
+        <div className="form-row align-items-center">
+            <div className="col">
+                <input type="text" className="form-control" placeholder="City" />
+            </div>
+            <div className="col-auto">
+                <button type="submit" className="btn btn-primary">Get forecast</button>
+            </div>
+        </div>
+    </form>
+);
+
+export default WeatherForm;
+```
+Weather (`src/Weather/Weather.tsx`):
+```tsx
+import React from 'react';
+import WeatherForm from "./WeatherForm";
+
+interface WeatherProps {
+}
+
+const Weather: React.FunctionComponent<WeatherProps> = () => (
+    <div className="col-6">
+        <div className="card">
+            <div className="card-header">
+                Weather forecast
+            </div>
+            <div className="card-body">
+                <WeatherForm />
+            </div>
+        </div>
+    </div>
+);
+
+export default Weather;
+```
+Finally, we can move to `WeatherContainer`. It needs to be class component, as it will keep form values in its state.
