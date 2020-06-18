@@ -134,3 +134,56 @@ Contents of `index.css` should be replaced with the following CSS in order to ap
     margin: -5px;
 }
 ```
+
+## Exercise 4 - Passing data through props
+Let's avoid code duplication in `Game` component by creating reusable `Tile` component:
+```typescript
+import React from 'react';
+
+export enum TileType {
+    EMPTY,
+    CIRCLE,
+    CROSS
+}
+
+interface TileProps {
+    type: TileType;
+}
+
+const TEXT = {
+    [TileType.EMPTY]: '',
+    [TileType.CIRCLE]: 'O',
+    [TileType.CROSS]: 'X',
+};
+
+const COLOR = {
+    [TileType.EMPTY]: 'outline-secondary',
+    [TileType.CIRCLE]: 'success',
+    [TileType.CROSS]: 'info',
+};
+
+const Tile: React.FunctionComponent<TileProps> = (props) => (
+    <button
+        type="button"
+        className={`tile btn btn-${COLOR[props.type]}`}
+    >
+        {TEXT[props.type]}
+    </button>
+);
+
+export default Tile;
+```
+Notice that we replaced `React.FunctionComponent` with parametrized `React.FunctionComponent<TileProps>` - that's because our component will receive data through so-called `props` which we parametrized using TypeScript. 
+
+A common practice is to use [object destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Object_destructuring) and replace `props` with `{ type }` so that we can use `type` instead of `props.type` later in the code. Here are few examples of `object destructuring`:
+```javascript
+const user = { name: "John", surname: "Doe", address: { city: "New York", zipCode: "10055" } };
+const { name, surname, address } = user; // name = "John", surname = "Doe", address = { city: "New York", zipCode: "10055" }
+const { address: { city, zipCode } } = user; // city = "New York", zipCode = "10055"
+const { name: nameAlias } = user; // nameAlias = "John"
+```
+Another useful feature that we used is `string interpolation`:
+```javascript
+const name = "Pawel";
+console.log(`Hello ${name}!`) // Hello Pawel!
+```

@@ -1,20 +1,16 @@
 import React from 'react';
+import Header from "./Header";
+import Game from "./Game";
 
 function App() {
-  return (
-    <div className="container py-5">
-      <header className="mb-5">
-        <h1 className="d-flex justify-content-between align-items-center">
-          <span>React Tutorial App</span>
-          <small className="text-muted">v. {new Date().toLocaleDateString()}</small>
-        </h1>
-        <hr />
-      </header>
-      <div className="row justify-content-center">
-        TODO
-      </div>
-    </div>
-  );
+    return (
+        <div className="container py-5">
+            <Header/>
+            <div className="row justify-content-center">
+                <Game />
+            </div>
+        </div>
+    );
 }
 
 export default App;
