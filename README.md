@@ -456,3 +456,79 @@ const Weather: React.FunctionComponent<WeatherProps> = () => (
 export default Weather;
 ```
 Finally, we can move to `WeatherContainer`. It needs to be class component, as it will keep form values in its state.
+
+## Exercise 10 - Loading data with AJAX
+Interface for our data:
+```typescript
+export interface Forecast {
+    main: {
+        temp: number;
+        pressure: number;
+        humidity: number;
+    }
+}
+```
+Util function for making an AJAX request:
+```typescript
+export function loadForecast(city: string): Promise<Forecast> {
+    return new Promise<Forecast>((resolve, reject) => {
+        const params = new URLSearchParams();
+        params.set("q", city);
+        params.set("units", "metric");
+        params.set("appid", process.env.REACT_APP_API_KEY || "");
+        fetch(`https://api.openweathermap.org/data/2.5/weather?${params.toString()}`)
+            .then(response => {
+                if (response.ok) {
+                    response.json().then(resolve);
+                } else {
+                    reject();
+                }
+            })
+            .catch(reject);
+    });
+}
+```
+Next, we need to create `.env` file with `REACT_APP_API_KEY=<secret value>` and restart our application.
+
+In React we usually make AJAX request inside `componentDidMount` [lifecycle method](https://reactjs.org/docs/react-component.html). Using our util, we can write the following code:
+```tsx
+loadForecast(this.state.city)
+    .then(forecast => {
+        // on success
+	})
+    .catch(() => {
+        // on error
+	})
+    .finally(() => {
+        // in both cases
+	});
+```
+To make our component user-friendly, we should add loading and error indicators. Once again it can be achieved easily with state variables `loading` and `error`. Then we can push them down to `Weather` component and use as this:
+```tsx
+{error && (
+    <div className="alert alert-danger my-3" role="alert">Loading forecast data failed!</div>
+)}
+{loading && (
+    <div className="text-center p-5" data-testid="spinner">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+    </div>
+) || forecast !== null && (
+    <div className="row text-center">
+        <dl className="mt-3 mb-0 col-4">
+            <dt>Temperature</dt>
+            <dd>{forecast.main.temp} &deg;C</dd>
+        </dl>
+        <dl className="mt-3 mb-0 col-4">
+            <dt>Pressure</dt>
+            <dd>{forecast.main.pressure} hPa</dd>
+        </dl>
+        <dl className="mt-3 mb-0 col-4">
+            <dt>Humidity</dt>
+            <dd>{forecast.main.humidity}%</dd>
+        </dl>
+    </div>
+)}
+```
+Once again, you can try and implement this container using hooks.
