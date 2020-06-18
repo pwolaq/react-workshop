@@ -354,3 +354,56 @@ Additionaly, we can show draw message if there is no winner and there are 0 empt
     It's a draw!
 </div>
 ```
+
+## Exercise 8 - React Router
+We want to add some routing to our application. First, we need to install router and its typings:
+```bash
+npm install react-router-dom --save
+npm install @types/react-router-dom --save-dev
+```
+Now we can replace our `<GameContainer />` inside `src/App.tsx` with router's `Switch` component:
+```tsx
+<Switch>
+    <Route path="/game" component={GameContainer}/>
+    <Route path="/weather/:city?" component={WeatherContainer}/>
+    <Route component={Home}/>
+</Switch>
+```
+For better code organisation, let's move all game-related files into `Game` directory and create `Weather` and `Home` for the rest of the routes. Then we can create some empty components in those directories in order to compile our code.
+
+This is the code for `src/Home/index.tsx`, which will be our home route. It will display cards with links to other routes:
+```tsx
+import React from 'react';
+import Card from "./Card";
+
+const Home: React.FunctionComponent = () => (
+    <React.Fragment>
+        <Card
+            title="Tic-tac-toe"
+            button="Play a game"
+            url="/game"
+        />
+        <Card
+            title="Open Weather API"
+            button="Get forecast"
+            url="/weather"
+        />
+    </React.Fragment>
+);
+
+export default Home;
+```
+You may notice new type of component here - `React.Fragment`. Because JSX is a tree-like structure, you may only have one root node. In our example we want to have 2 cards so in order to do it we need to wrap them with some other component. `React.Fragment` does not render any HTML so it's basically a wrapper for returning multiple nodes.
+
+Next we need to implement `src/Home/Card.tsx` to return the following parametrized code:
+```html
+<div class="col-3">
+    <div class="card text-center">
+        <div class="card-body">
+            <h5 class="card-title">Tic-tac-toe</h5>
+            <a class="btn btn-primary" href="/game">Play a game</a>
+        </div>
+    </div>
+</div>
+```
+Links in `react-router` can be created using `Link` component.
