@@ -60,3 +60,77 @@ new Date().toLocaleDateString()
 ```
 
 Also, if you want you can now remove `src/logo.svg` and `src/App.css` files along with their imports in `src/App.tsx` - we won't need them anymore.
+
+## Exercise 3 - Creating components
+Let's start by moving `<header className="mb-5">` along with its children to separate file `src/Header.tsx`:
+```typescript
+import React from 'react';
+
+const Header: React.FunctionComponent = () => (
+    <header className="mb-5">
+        <h1 className="d-flex justify-content-between align-items-center">
+            <span>React Tutorial App</span>
+            <small className="text-muted">v. { new Date().toLocaleDateString() }</small>
+        </h1>
+        <hr />
+    </header>
+);
+
+export default Header;
+```
+First, we need to import React from `react` package installed via `npm`. Then, we define `Header` variable of type `React.FunctionComponent` which is basically arrow function with no arguments that returns JSX. Finally, we export `Header` component from the file so that it can be imported elsewhere.
+
+[Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) (aka lambdas) in Javascript:
+```javascript
+// Traditional, anonymous function
+const fn1 = function(name) {
+    console.log(`Hello ${name}!`);
+}
+
+// Arrow function
+const fn2 = (name) => {
+    console.log(`Hello ${name}!`);
+}
+
+// Arrow function with single argument and single expression (both pairs of brackets can be skipped)
+const fn3 = name => console.log(`Hello ${name}!`);
+```
+
+Going back to `src/App.tsx` we can now replace `<header className="mb-5">...</header>` with `<Header />`, as long as we import it beforehand using `import Header from './Header.tsx'`. 
+
+Now, create a new `Game` component inside `src/Game.tsx` with following output and replace `TODO` inside `App` component with `<Game />`
+```jsx
+<div>
+    <div className="card">
+        <div className="d-flex">
+            <div className="p-5">
+                <div className="board">
+                    <button type="button" className="tile btn btn-success">O</button>
+                    <button type="button" className="tile btn btn-info">X</button>
+                    <button type="button" className="tile btn btn-success">O</button>
+                    <button type="button" className="tile btn btn-info">X</button>
+                    <button type="button" className="tile btn btn-success">O</button>
+                    <button type="button" className="tile btn btn-info">X</button>
+                    <button type="button" className="tile btn btn-success">O</button>
+                    <button type="button" className="tile btn btn-outline-secondary" />
+                    <button type="button" className="tile btn btn-outline-secondary" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+```
+Contents of `index.css` should be replaced with the following CSS in order to apply missing styles:
+```css
+.tile {
+    width: 100px;
+    height: 100px;
+    font-size: 2rem;
+    margin: 5px;
+}
+
+.board {
+    width: 330px;
+    margin: -5px;
+}
+```
