@@ -8,6 +8,8 @@ export enum TileType {
 
 interface TileProps {
     type: TileType;
+    disabled: boolean;
+    onClick: () => void;
 }
 
 const TEXT = {
@@ -22,12 +24,14 @@ const COLOR = {
     [TileType.CROSS]: 'info',
 };
 
-const Tile: React.FunctionComponent<TileProps> = (props) => (
+const Tile: React.FunctionComponent<TileProps> = ({ type, onClick, disabled }) => (
     <button
         type="button"
-        className={`tile btn btn-${COLOR[props.type]}`}
+        className={`tile btn btn-${COLOR[type]}`}
+        onClick={onClick}
+        disabled={disabled}
     >
-        {TEXT[props.type]}
+        {TEXT[type]}
     </button>
 );
 

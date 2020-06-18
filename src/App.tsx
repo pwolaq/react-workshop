@@ -1,13 +1,13 @@
 import React from 'react';
 import Header from "./Header";
-import Game from "./Game";
+import GameContainer from "./GameContainer";
 
 function App() {
     return (
         <div className="container py-5">
             <Header/>
             <div className="row justify-content-center">
-                <Game />
+                <GameContainer />
             </div>
         </div>
     );
