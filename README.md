@@ -532,3 +532,99 @@ To make our component user-friendly, we should add loading and error indicators.
 )}
 ```
 Once again, you can try and implement this container using hooks.
+
+## Exercise 11 - Testing
+In this exercise we will be testing our Weather component.
+
+`create-react-app` out of the box is configured with test utils: `jest` and `react-testing-library`.
+
+For mocking network requests we will use this primitive code:
+```typescript
+export const mockNoResponse = () => jest
+    .spyOn(global as any, 'fetch')
+    .mockImplementation(() => new Promise(() => {}));
+
+export const mockOkResponse = () => jest
+    .spyOn(global as any, 'fetch')
+    .mockImplementation(() => Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({
+                "main": {
+                    "temp": 293.25,
+                    "pressure": 1019,
+                    "humidity": 83,
+                    "temp_min": 289.82,
+                    "temp_max": 295.37
+                }
+            }
+        )
+    }));
+
+export const mockErrorResponse = () => jest
+    .spyOn(global as any, 'fetch')
+    .mockImplementation(() => Promise.resolve({
+        ok: false
+    }));
+```
+Tests to write:
+```javascript
+describe('Weather Component', () => {
+    describe('without city in path', () => {
+        it('should render empty input', () => {
+            // TODO
+        });
+
+        it('should not load the forecast', () => {
+            // TODO
+        });
+    });
+
+    describe('with city in path', () => {
+        it('should render city name in input', () => {
+            // TODO
+        });
+
+        it('should load the forecast', () => {
+            // TODO
+        });
+    });
+
+    describe('form submit', () => {
+        it('should call the API with provided city', () => {
+            // TODO
+        });
+
+        it('should change page url to contain city name', () => {
+            // TODO
+        });
+    });
+
+    describe('forecast loading', () => {
+        it('should disable the form', () => {
+            // TODO
+        });
+
+        it('should display spinner', () => {
+            // TODO
+        });
+    });
+
+    describe('forecast loaded', () => {
+        it('should enable the form', () => {
+            // TODO
+        });
+
+        it('should hide the spinner', () => {
+            // TODO
+        });
+
+        it('should display error on failure', () => {
+            // TODO
+        });
+
+        it('should display data on success', () => {
+            // TODO
+        });
+    });
+});
+```

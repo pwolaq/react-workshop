@@ -2,9 +2,13 @@ import React from "react";
 import Weather from "./Weather";
 import { RouteComponentProps } from "react-router-dom";
 import WeatherForm from "./WeatherForm";
+import {Forecast, loadForecast} from "./utils";
 
 interface WeatherContainerState {
     city: string;
+    loading: boolean;
+    error: boolean;
+    forecast: Forecast | null;
 }
 
 interface RouteInfo {
@@ -15,13 +19,14 @@ type WeatherContainerProps = RouteComponentProps<RouteInfo>;
 
 class WeatherContainer extends React.Component<WeatherContainerProps, WeatherContainerState> {
     state = {
-        city: this.props.match.params.city ?? ""
+        city: this.props.match.params.city ?? "",
+        loading: false,
+        error: false,
+        forecast: null
     };
 
     componentDidMount() {
-        if (this.state.city !== '') {
-            this.getForecast();
-        }
+        this.getForecast();
     }
 
     componentDidUpdate(prevProps: Readonly<WeatherContainerProps>) {
@@ -42,12 +47,39 @@ class WeatherContainer extends React.Component<WeatherContainerProps, WeatherCon
     };
 
     getForecast = () => {
-        // TODO
+        if (this.state.city !== "") {
+            this.setState({
+                error: false,
+                loading: true
+            });
+
+            loadForecast(this.state.city)
+                .then(forecast => {
+                    this.setState({
+                        forecast
+                    });
+                })
+                .catch(() => {
+                    this.setState({
+                        error: true,
+                        forecast: null
+                    });
+                })
+                .finally(() => {
+                    this.setState({
+                        loading: false
+                    });
+                });
+        }
     };
 
     render() {
         return (
-            <Weather>
+            <Weather
+                error={this.state.error}
+                loading={this.state.loading}
+                forecast={this.state.forecast}
+            >
                 <WeatherForm
                     city={this.state.city}
                     onCityChange={this.handleCityChange}
