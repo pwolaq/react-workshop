@@ -2,7 +2,7 @@ import React from 'react';
 import Header from "./Header";
 import GameContainer from "./game/GameContainer";
 import { Switch, Route } from 'react-router-dom';
-import WeatherContainer from "./weather/WeatherContainer";
+import WeatherHooks from "./weather/WeatherHooks";
 import Home from "./home/Home";
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
             <div className="row justify-content-center">
                 <Switch>
                     <Route path="/game" component={GameContainer} />
-                    <Route path="/weather/:city?" component={WeatherContainer} />
+                    <Route path="/weather/:city?" component={WeatherHooks} />
                     <Route component={Home} />
                 </Switch>
             </div>

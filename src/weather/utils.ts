@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface Forecast {
     main: {
         temp: number;
@@ -5,6 +7,22 @@ export interface Forecast {
         humidity: number;
     }
 }
+
+interface WeatherContextValue {
+    loading: boolean;
+    error: boolean;
+    forecast: Forecast | null;
+    city: string;
+    dispatch: React.Dispatch<any>
+}
+
+export const WeatherContext = React.createContext<WeatherContextValue>({
+    loading: false,
+    error: false,
+    forecast: null,
+    city: '',
+    dispatch: () => undefined
+});
 
 export function loadForecast(city: string): Promise<Forecast> {
     return new Promise<Forecast>((resolve, reject) => {
